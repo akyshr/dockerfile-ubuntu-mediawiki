@@ -1,12 +1,14 @@
 #! /bin/bash
-
-DATA_DIR=/var/lib/wiki_data
+DATA_DIR=${DATA_DIR:/var/lib/wiki_data}
 SETTINGS_DIR=${DATA_DIR}/settings
 IMAGES_DIR=${DATA_DIR}/images
 WIKI_DIR=/var/lib/mediawiki
+echo DATA_DIR=${DATA_DIR}
 #mkdir ${DATA_DIR}
 if [ -d ${DATA_DIR} ]; then
-    mkdir ${SETTINGS_DIR}
+    if [ ! -d ${SETTINGS_DIR} ]; then
+	mkdir ${SETTINGS_DIR}
+    fi
     chown -R www-data:www-data ${SETTINGS_DIR}
     if [ -f ${SETTINGS_DIR}/wiki.png ]; then
         (cd ${WIKI_DIR}/skins/common/images/; mv wiki.png wiki.png.orig)
@@ -22,4 +24,12 @@ if [ -d ${DATA_DIR} ]; then
     ln -sf ${IMAGES_DIR} ${WIKI_DIR}/images
     chown -R www-data:www-data ${IMAGES_DIR}
     chmod -R 775 ${IMAGES_DIR}
+
+    if [ -d ${DATA_DIR}/mysql ]; then
+	mv /var/lib/mysql /var/lib/mysql.orig
+        ln -sf  ${DATA_DIR}/mysql /var/lib/mysql
+    else
+	mv /var/lib/mysql ${DATA_DIR}/mysql
+	ln -sf ${DATA_DIR}/mysql /var/lib/mysql
+    fi
 fi

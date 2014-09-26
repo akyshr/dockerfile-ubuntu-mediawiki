@@ -15,8 +15,17 @@ docker run -d akyshr/ubuntu-mediawiki
  docker run -d -e "LANG=ja_JP.UTF-8" -e "TZ=JST-9" akyshr/ubuntu-mediawiki
 ````
 
+## Short URl
+add to the LocalSettings.php.
+````
+## http://www.mediawiki.org/wiki/Manual:Short_URL
+$wgScriptPath = "/mediawiki";
+$wgArticlePath = "/wiki/$1";
+````
+
 ###Configuration Parameters
 Below is the list of parameters that can be set using environment variables.
+
 * USER : user account name. Defaults to 'admin'.
 * PASSWORD : user password. Defaults to 'admin'.
 * LANG  : Language. Defaults to 'en_US.UTF-8'.
